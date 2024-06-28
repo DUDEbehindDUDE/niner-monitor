@@ -23,7 +23,7 @@ function Data() {
     queryKey: ["test"],
     queryFn: () =>
       fetch(
-        "http://localhost:5096/api/OccupancyData/currentoccupancydata"
+        "http://localhost:5096/api/OccupancyData/CurrentOccupancyData"
       ).then((res) => res.json()),
     refetchInterval: 1000
   });
