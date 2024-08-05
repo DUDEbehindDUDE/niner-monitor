@@ -19,23 +19,70 @@ import AtkinsItem from "./Components/AtkinsItem";
 import ParkingData from "./Components/ParkingData";
 
 const queryClient = new QueryClient();
+const headerStyle = { fontWeight: 500 };
 const theme = createTheme({
   typography: {
-    h1: { fontWeight: 600 },
-    h2: { fontWeight: 600 },
-    h3: { fontWeight: 600 },
-    h4: { fontWeight: 600 },
-    h5: { fontWeight: 600 },
-    h6: { fontWeight: 600 },
+    h1: headerStyle,
+    h2: headerStyle,
+    h3: headerStyle,
+    h4: headerStyle,
+    h5: headerStyle,
+    h6: headerStyle,
   },
   palette: {
+    mode: "dark", // Change to 'light' if you prefer a light theme
     primary: {
       main: "#005035",
+      light: "#91D5B1",
+      dark: "#003824",
+      contrastText: "#FFFFFF",
     },
     secondary: {
       main: "#A49665",
+      light: "#D6C691",
+      dark: "#6A5E32",
+      contrastText: "#FFFFFF",
     },
-    mode: "dark",
+    background: {
+      default: "#0F1511",
+      paper: "#1B211D",
+    },
+    text: {
+      primary: "#DEE4DE",
+      secondary: "#C0C9C1",
+    },
+    error: {
+      main: "#FFB4AB",
+      light: "#FFDAD6",
+      dark: "#93000A",
+      contrastText: "#690005",
+    },
+    warning: {
+      main: "#FAE287",
+      light: "#FFF0C3",
+      dark: "#544600",
+      contrastText: "#221B00",
+    },
+    info: {
+      main: "#A5CDDE",
+      light: "#C0E9FA",
+      dark: "#244C5A",
+      contrastText: "#063543",
+    },
+    success: {
+      main: "#8ED5B0",
+      light: "#AAF2CB",
+      dark: "#005236",
+      contrastText: "#003824",
+    },
+    divider: "#404943",
+    action: {
+      active: "#8A938C",
+      hover: "#737874",
+      selected: "#5A605B",
+      disabled: "#424844",
+      disabledBackground: "#373D39",
+    },
   },
 });
 
@@ -56,14 +103,14 @@ function Data() {
   const { isPending, error, data } = useQuery<OccupancyApiResponse>({
     queryKey: ["CurrentOccupancyData"],
     queryFn: () =>
-      fetch(
-        "http://localhost:5096/api/OccupancyData/CurrentOccupancyData"
-      ).then((res) => res.json()),
+      fetch("http://10.0.0.7:5096/api/OccupancyData/CurrentOccupancyData").then(
+        (res) => res.json()
+      ),
     refetchInterval: 5000,
   });
 
-  if (isPending) return <p>Loading..."</p>;
-  if (error) return <p>Error! {error.message}</p>;
+  if (isPending) return <Typography>Loading..."</Typography>;
+  if (error) return <Typography>Error! {error.message}</Typography>;
 
   const lastUpdate = new Date(data.time);
   const atkins = data.data.adkins;

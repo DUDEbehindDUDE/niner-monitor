@@ -10,6 +10,8 @@ import { display, formatTime } from "../util/util";
 import { useState } from "react";
 import MenuDialog from "./MenuDialog";
 import { isWithinInterval, setHours, setMinutes, setSeconds } from "date-fns";
+import HistoricalItemGraph from "./HistoricalItemGraph";
+import InfoQuestionText from "./InfoQuestionText";
 
 function DiningItem({ item, data }: { item: string; data: any }) {
   const [openDialog, setOpenDialog] = useState(false);
@@ -24,7 +26,7 @@ function DiningItem({ item, data }: { item: string; data: any }) {
     error: menuDataError,
     data: menuData,
   } = useQuery<MenuData>({
-    queryKey: [item + "DiningData"],
+    queryKey: ["DiningData"],
     queryFn: async () => {
       const res = await fetch(
         "https://api.dineoncampus.com/v1/sites/todays_menu?site_id=5751fd2790975b60e0489226"
@@ -38,7 +40,7 @@ function DiningItem({ item, data }: { item: string; data: any }) {
     error: timeDataError,
     data: timeData,
   } = useQuery<TimeData>({
-    queryKey: [item + "DiningDataTimes"],
+    queryKey: ["DiningDataTimes"],
     queryFn: async () => {
       const res = await fetch(
         `https://api.dineoncampus.com/v1/locations/weekly_schedule?site_id=5751fd2790975b60e0489226&date=${now.toISOString()}`
@@ -255,18 +257,14 @@ function DiningItem({ item, data }: { item: string; data: any }) {
       <Typography variant={"h6"}>
         {name}: {display(occupancy, maxOccupancy, percent)}
       </Typography>
-      <Grid container spacing={4} sx={{ pt: 1 }}>
+      <InfoQuestionText
+        text="Updated live"
+        tooltip="Occupancy data is updated realtime, as long as you have an internet connection"
+      />
+      <Grid container spacing={4} sx={{ mt: -1 }}>
         <Grid item xs={12} md={8}>
-          <Box
-            sx={{
-              width: "100%",
-              height: "12em",
-              bgcolor: "#333",
-              p: 1,
-              borderRadius: 4,
-            }}
-          >
-            <Typography>Occupancy data over the past hour</Typography>
+          <Box sx={{ width: "100%" }}>
+            <HistoricalItemGraph type="dining" subtype={item} />
           </Box>
         </Grid>
         <Grid item xs={12} md={4}>
