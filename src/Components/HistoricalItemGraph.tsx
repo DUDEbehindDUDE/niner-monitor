@@ -114,6 +114,18 @@ function HistoricalItemGraph({
   }
 
   const dataset = generateDataset();
+
+  // have to do this because we can't include multiple things (% and amount) in the dataset
+  function getGraphIntervals(intervalCount: number) {
+    const max = dataset.dataMax;
+    const interval = max / intervalCount;
+    let intervals: number[] = [];
+    for (let i = 0; i < intervalCount; i++) {
+      intervals = [...intervals, interval * i];
+    }
+    return [...intervals, max];
+  }
+
   return (
     <LineChart
       height={height}
@@ -136,11 +148,14 @@ function HistoricalItemGraph({
         {
           max: type !== "atkins" ? dataset.dataMax : undefined,
           min: 0,
+          tickInterval: type !== "dining" ? "auto" : getGraphIntervals(5),
           valueFormatter: (value, context) => {
             if (context.location !== "tick") return value;
             if (dataset.dataType === "people") {
-              if (type === "dining")
+              if (type === "dining") {
+                // have to do this because we can't include multiple things (% and amount) in the dataset
                 return `${Math.round((value * 100) / dataset.dataMax)}%`;
+              }
               return value;
             }
             return `${value}%`;
