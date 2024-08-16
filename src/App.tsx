@@ -109,7 +109,7 @@ function Data() {
     refetchInterval: 5000,
   });
 
-  if (isPending) return <Typography>Loading..."</Typography>;
+  if (isPending) return <Typography sx={{ mt: 4 }}>Loading...</Typography>;
   if (error) return <Typography>Error! {error.message}</Typography>;
 
   const lastUpdate = new Date(data.time);
