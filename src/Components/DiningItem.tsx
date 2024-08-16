@@ -6,10 +6,17 @@ import {
   MenuStationItems,
 } from "../types/MenuData";
 import { TimeData, TimeLocationData } from "../types/TimeData";
-import { display, formatTime } from "../util/util";
+import { display, formatTime, getOrdinalSuffix } from "../util/util";
 import { useState } from "react";
 import MenuDialog from "./MenuDialog";
-import { isWithinInterval, setHours, setMinutes, setSeconds } from "date-fns";
+import {
+  format,
+  isWithinInterval,
+  parse,
+  setHours,
+  setMinutes,
+  setSeconds,
+} from "date-fns";
 import HistoricalItemGraph from "./HistoricalItemGraph";
 import InfoQuestionText from "./InfoQuestionText";
 
@@ -70,10 +77,7 @@ function DiningItem({ item, data }: { item: string; data: any }) {
 
     let location: TimeLocationData | null = null;
     for (const _location of timeData.the_locations) {
-      if (
-        item === "sovi" &&
-        _location.name.toLowerCase() === "market at sovi"
-      ) {
+      if (item === "sovi" && _location.name.toLowerCase() === "sovi") {
         location = _location;
         break;
       }
@@ -93,12 +97,13 @@ function DiningItem({ item, data }: { item: string; data: any }) {
       for (let i = 0; i < location.week.length; i++) {
         let current = location.week[i];
         if (!current.closed) {
-          return (
-            <Typography>Closed for today. Opens {current.date}.</Typography>
-          );
+          const date = parse(current.date, "yyyy-MM-dd", new Date());
+          let dateStr = format(date, "EEEE, MMM d");
+          dateStr += getOrdinalSuffix(format(date, "d")); // adds suffix (e.g. 'th' to '20th')
+          return <Typography>Closed for today. Opens {dateStr}.</Typography>;
         }
       }
-      return <Typography>Closed for at least a week.</Typography>;
+      return <Typography>Closed this week.</Typography>;
     }
 
     let isOpen = false;
@@ -128,18 +133,28 @@ function DiningItem({ item, data }: { item: string; data: any }) {
     );
   }
 
+  function menuTitle(text: string) {
+    return (
+      <InfoQuestionText
+        text={text}
+        tooltip="Provided by Dine On Campus, may be incorrect."
+        bold
+      />
+    );
+  }
+
   function getMenuData() {
     if (menuDataIsPending)
       return (
         <>
-          <Typography sx={{ fontWeight: 600, mt: 1 }}>Menu</Typography>
+          {menuTitle("Menu")}
           <Typography>Loading...</Typography>
         </>
       );
     if (menuDataError) {
       return (
         <>
-          <Typography sx={{ fontWeight: 600, mt: 1 }}>Menu</Typography>
+          {menuTitle("Menu")}
           <Typography>
             There was a problem fetching menu data. You can view the full menu
             at{" "}
@@ -154,10 +169,7 @@ function DiningItem({ item, data }: { item: string; data: any }) {
 
     let location: MenuLocationData | null = null;
     for (const _location of menuData.locations) {
-      if (
-        item === "sovi" &&
-        _location.name.toLowerCase() === "market at sovi"
-      ) {
+      if (item === "sovi" && _location.name.toLowerCase() === "sovi") {
         location = _location;
         break;
       }
@@ -173,7 +185,7 @@ function DiningItem({ item, data }: { item: string; data: any }) {
     if (location === null) {
       return (
         <>
-          <Typography sx={{ fontWeight: 600, mt: 1 }}>Menu</Typography>
+          {menuTitle("Menu")}
           <Typography>
             Nothing is on the menu today. You can view the full menu at{" "}
             <Link
@@ -215,9 +227,7 @@ function DiningItem({ item, data }: { item: string; data: any }) {
 
     return (
       <>
-        <Typography sx={{ fontWeight: 600, mt: 1 }}>
-          {location.periods[periodIndex!].name} Menu
-        </Typography>
+        {menuTitle(`${location.periods[periodIndex!].name} Menu`)}
         {parsedItems}
         <Button
           variant="contained"
@@ -268,7 +278,11 @@ function DiningItem({ item, data }: { item: string; data: any }) {
           </Box>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Typography sx={{ fontWeight: 600 }}>Hours</Typography>
+          <InfoQuestionText
+            text="Hours"
+            tooltip="Provided by Dine On Campus, may be incorrect."
+            bold={true}
+          />
           {getTimeData()}
           {getMenuData()}
         </Grid>

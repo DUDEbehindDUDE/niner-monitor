@@ -56,3 +56,24 @@ export function roundDateTo15(date: Date | string) {
 
   return setMilliseconds(setSeconds(addMinutes(date, minutesToAdd), 0), 0);
 }
+
+// Helper function to get the ordinal suffix (e.g., "st", "nd", "rd", "th")
+export function getOrdinalSuffix(day: string): "st" | "nd" | "rd" | "th";
+export function getOrdinalSuffix(day: number): "st" | "nd" | "rd" | "th";
+export function getOrdinalSuffix(day: number | string) {
+  if (typeof day === "string") {
+    day = parseInt(day);
+  }
+
+  if (day > 3 && day < 21) return "th"; // Covers 4th to 20th
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
