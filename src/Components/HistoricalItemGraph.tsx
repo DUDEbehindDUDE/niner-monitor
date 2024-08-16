@@ -134,7 +134,8 @@ function HistoricalItemGraph({
       ]}
       yAxis={[
         {
-          max: dataset.dataMax,
+          max: type !== "atkins" ? dataset.dataMax : undefined,
+          min: 0,
           valueFormatter: (value, context) => {
             if (context.location !== "tick") return value;
             if (dataset.dataType === "people") {
