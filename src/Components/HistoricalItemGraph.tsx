@@ -88,7 +88,11 @@ function HistoricalItemGraph({
           if (lot.name === subtype) percent = lot.percentAvailable;
         }
 
-        if (!percent) throw Error("Component subtype is not valid!");
+        if (percent === null) {
+          console.error("No lot percent! Subtype is likely invalid!");
+          console.error(_data);
+          return;
+        }
 
         dataset.data = [
           ...dataset.data,
