@@ -103,9 +103,9 @@ function Data() {
   const { isPending, error, data } = useQuery<OccupancyApiResponse>({
     queryKey: ["CurrentOccupancyData"],
     queryFn: () =>
-      fetch("http://10.0.0.7:5096/api/OccupancyData/CurrentOccupancyData").then(
-        (res) => res.json()
-      ),
+      fetch(
+        "https://uncc-occupancy-tracker-backend.onrender.com/api/OccupancyData/CurrentOccupancyData"
+      ).then((res) => res.json()),
     refetchInterval: 5000,
   });
 

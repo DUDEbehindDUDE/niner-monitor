@@ -21,7 +21,7 @@ function HistoricalItemGraph({
     queryKey: ["HistoricalOccupancyData" + type],
     queryFn: async () => {
       const res = await fetch(
-        `http://10.0.0.7:5096/api/OccupancyData/HistoricalOccupancyData?item=${type}`
+        `https://uncc-occupancy-tracker-backend.onrender.com/api/OccupancyData/HistoricalOccupancyData?item=${type}`
       );
       return await res.json();
     },
