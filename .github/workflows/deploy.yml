@@ -26,7 +26,5 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Deploy using Yarn
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token for GitHub Pages
-        run: yarn deploy
+      - name: Deploy
+        uses: actions/deploy-pages@v4
