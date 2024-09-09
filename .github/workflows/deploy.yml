@@ -27,6 +27,6 @@ jobs:
         run: yarn install
 
       - name: Deploy using Yarn
-        run: yarn deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token for GitHub Pages
+        run: yarn deploy
