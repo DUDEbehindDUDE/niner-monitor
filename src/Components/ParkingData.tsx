@@ -3,10 +3,8 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Button,
   FormControlLabel,
   FormGroup,
-  Grid,
   IconButton,
   Paper,
   Switch,
@@ -14,7 +12,7 @@ import {
 } from "@mui/material";
 import { OccupancyParking } from "../types/OccupancyResponseData";
 import { display } from "../util/util";
-import { ExpandMore, Favorite, Star } from "@mui/icons-material";
+import { ExpandMore, Star } from "@mui/icons-material";
 import HistoricalItemGraph from "./HistoricalItemGraph";
 import InfoQuestionText from "./InfoQuestionText";
 import { useState } from "react";
