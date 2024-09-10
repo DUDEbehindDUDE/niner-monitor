@@ -104,13 +104,13 @@ function ParkingData({ parking }: { parking: OccupancyParking[] }) {
       path: "/",
       expires: expiresAt,
     });
-  }, [starred, setCookie]);
+  }, [starred, setCookie, expiresAt]);
   useEffect(() => {
     setCookie("parkingHideNonStars", hideNonStars.toString(), {
       path: "/",
       expires: expiresAt,
     });
-  }, [hideNonStars, setCookie]);
+  }, [hideNonStars, setCookie, expiresAt]);
 
   return (
     <Paper style={{ padding: 20 }}>
