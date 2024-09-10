@@ -17,7 +17,11 @@ function HistoricalItemGraph({
   subtype?: string | null;
 }) {
   let height = 200; // chart height
-  const { isPending, error, data } = useQuery<HistoricalData[]>({
+  const {
+    isPending,
+    error,
+    data: response,
+  } = useQuery<HistoricalData[]>({
     queryKey: ["HistoricalOccupancyData" + type],
     queryFn: async () => {
       const res = await fetch(
@@ -29,8 +33,10 @@ function HistoricalItemGraph({
   });
 
   if (isPending) return <Typography>Loading graph data...</Typography>;
-  if (error)
+  if (error) {
     return <Typography>Error fetching graph data: {error.message}.</Typography>;
+  }
+  const data: HistoricalData[] | null | undefined = response; // because otherwise data is any? might be a react query bug or something idk
 
   function createData(time: Date, occupancy: number | null = null) {
     const timeString = formatTime(time);

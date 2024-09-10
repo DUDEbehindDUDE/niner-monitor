@@ -19,10 +19,18 @@ import {
 } from "date-fns";
 import HistoricalItemGraph from "./HistoricalItemGraph";
 import InfoQuestionText from "./InfoQuestionText";
+import { OccupancyApiResponse } from "../types/OccupancyResponseData";
 
-function DiningItem({ item, data }: { item: string; data: any }) {
+function DiningItem({
+  item,
+  response,
+}: {
+  item: string;
+  response: OccupancyApiResponse;
+}) {
   const [openDialog, setOpenDialog] = useState(false);
   const now = new Date();
+  const nowIso = now.toISOString();
   let name: string;
   let percent: number;
   let occupancy: number;
@@ -50,7 +58,7 @@ function DiningItem({ item, data }: { item: string; data: any }) {
     queryKey: ["DiningDataTimes"],
     queryFn: async () => {
       const res = await fetch(
-        `https://api.dineoncampus.com/v1/locations/weekly_schedule?site_id=5751fd2790975b60e0489226&date=${now.toISOString()}`
+        `https://api.dineoncampus.com/v1/locations/weekly_schedule?site_id=5751fd2790975b60e0489226&date=${nowIso}`
       );
       return await res.json();
     },
@@ -59,16 +67,16 @@ function DiningItem({ item, data }: { item: string; data: any }) {
   item = item.toLowerCase();
   if (item === "sovi") {
     name = "Social Village (SoVi)";
-    occupancy = data.data.dining.currentSoVi;
-    maxOccupancy = data.data.dining.maxSoVi;
-    percent = data.data.dining.percentSoVi;
+    occupancy = response.data.dining.currentSoVi;
+    maxOccupancy = response.data.dining.maxSoVi;
+    percent = response.data.dining.percentSoVi;
   } else if (item === "social704") {
     name = "Social 704";
-    occupancy = data.data.dining.current704;
-    maxOccupancy = data.data.dining.max704;
-    percent = data.data.dining.percent704;
+    occupancy = response.data.dining.current704;
+    maxOccupancy = response.data.dining.max704;
+    percent = response.data.dining.percent704;
   } else {
-    throw Error("No!");
+    throw Error(`Invalid dining type ${item}!`);
   }
 
   function getTimeData() {

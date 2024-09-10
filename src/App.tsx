@@ -4,6 +4,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import {
+  Box,
   Container,
   createTheme,
   CssBaseline,
@@ -12,7 +13,6 @@ import {
   ThemeProvider,
   Typography,
 } from "@mui/material";
-import { formatDistanceToNow } from "date-fns";
 import DiningItem from "./Components/DiningItem";
 import { OccupancyApiResponse } from "./types/OccupancyResponseData";
 import AtkinsItem from "./Components/AtkinsItem";
@@ -100,7 +100,11 @@ function App() {
 }
 
 function Data() {
-  const { isPending, error, data } = useQuery<OccupancyApiResponse>({
+  const {
+    isPending,
+    error,
+    data: response,
+  } = useQuery<OccupancyApiResponse>({
     queryKey: ["CurrentOccupancyData"],
     queryFn: () =>
       fetch(
@@ -111,9 +115,8 @@ function Data() {
 
   if (isPending) return <Typography sx={{ mt: 4 }}>Loading...</Typography>;
   if (error) return <Typography>Error! {error.message}</Typography>;
-
-  const lastUpdate = new Date(data.time);
-  const atkins = data.data.adkins;
+  const data = response.data;
+  const atkins = data.adkins;
 
   return (
     <>
@@ -124,8 +127,8 @@ function Data() {
         <Grid item xs={12} md={8}>
           <Paper style={{ padding: 20 }}>
             <Typography variant="h5">Dining</Typography>
-            <DiningItem item="social704" data={data} />
-            <DiningItem item="sovi" data={data} />
+            <DiningItem item="social704" response={response} />
+            <DiningItem item="sovi" response={response} />
           </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
@@ -134,12 +137,13 @@ function Data() {
               <AtkinsItem atkins={atkins} />
             </Grid>
             <Grid item>
-              <ParkingData parking={data.data.parking} />
+              <ParkingData parking={data.parking} />
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-      <p>Last updated {formatDistanceToNow(lastUpdate)} ago</p>
+      {/* add small amount of bottom padding */}
+      <Box sx={{ mb: 2 }} />
     </>
   );
 }
