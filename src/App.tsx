@@ -121,7 +121,7 @@ function Data() {
   return (
     <>
       <Typography variant="h3" sx={{ mt: 4 }}>
-        UNC Charlotte Occupancy Tracker
+        Niner Monitor
       </Typography>
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid item xs={12} md={8}>

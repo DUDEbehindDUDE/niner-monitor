@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://dudebehinddude.github.io/uncc-occupancy-tracker-frontend/",
+  "homepage": "https://dudebehinddude.github.io/niner-monitor/",
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
