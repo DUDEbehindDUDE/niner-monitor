@@ -3,11 +3,17 @@ import { addMinutes, format, setMilliseconds, setSeconds } from "date-fns";
 /**
  * Formats a given time to "h:mm a" (12-hour format with AM/PM).
  *
- * @param {Date | number} hourOrDate - A Date object or an hour value.
- * @param {number} [minutes] - The minutes value (only required if the first argument is a number).
+ * @param {Date} [date] - The Date object to format.
  * @returns {string} The formatted time in "h:mm a" format.
  */
 export function formatTime(date: Date): string;
+/**
+ * Formats a given time to "h:mm a" (12-hour format with AM/PM).
+ *
+ * @param {number} [hour] - The hour value.
+ * @param {number} [minutes] - The minutes value.
+ * @returns {string} The formatted time in "h:mm a" format.
+ */
 export function formatTime(hour: number, minutes: number): string;
 export function formatTime(
   hourOrDate: number | Date,
@@ -29,13 +35,26 @@ export function formatTime(
 /**
  * Displays a percentage or a formatted fraction with the percentage.
  *
- * @param {number} minOrPercent - The percentage (if only one argument) or the minimum value.
- * @param {number} [max] - The maximum value (optional if percentage is being displayed).
- * @param {number} [percent] - The percentage value when both min and max are provided (optional).
- * @returns {string} A formatted string displaying percentage or fraction with percentage.
+ * @param {number} [percent] - The percentage value (as a decimal, e.g. 0.2 -> 20%).
+ * @returns {string} A formatted string displaying percentage.
  */
 export function display(percent: number): string;
+/**
+ * Displays a percentage or a formatted fraction with the percentage.
+ *
+ * @param {number} [min] - The minimum value.
+ * @param {number} [max] - The maximum value.
+ * @returns {string} A formatted string displaying percentage or fraction with percentage.
+ */
 export function display(min: number, max: number): string;
+/**
+ * Displays a percentage or a formatted fraction with the percentage.
+ *
+ * @param {number} [min] - The minimum value.
+ * @param {number} [max] - The maximum value.
+ * @param {number} [percent] - The percentage value (as a decimal, e.g. 0.2 -> 20%).
+ * @returns {string} A formatted string displaying fraction with percentage.
+ */
 export function display(min: number, max: number, percent: number): string;
 export function display(
   minOrPercent: number,
