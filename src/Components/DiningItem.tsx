@@ -101,7 +101,6 @@ function DiningItem({
       return <Typography>Problem fetching hours.</Typography>;
     }
 
-    const todayIsoString = format(new Date(), "yyyy-MM-dd");
     let todayIndex = new Date().getDay(); // day of the week; 0 = sun, etc
 
     if (
