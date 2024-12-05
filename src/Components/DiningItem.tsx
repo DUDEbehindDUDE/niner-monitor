@@ -30,7 +30,7 @@ function DiningItem({
 }) {
   const [openDialog, setOpenDialog] = useState(false);
   const now = new Date();
-  const nowIso = now.toISOString();
+  const nowIso = now.toISOString().split("T")[0]; // just the date part of it
   let name: string;
   let percent: number;
   let occupancy: number;
@@ -101,8 +101,14 @@ function DiningItem({
       return <Typography>Problem fetching hours.</Typography>;
     }
 
-    if (location.week[0].hours.length === 0 || location.week[0].closed) {
-      for (let i = 0; i < location.week.length; i++) {
+    const todayIsoString = format(new Date(), "yyyy-MM-dd");
+    let todayIndex = new Date().getDay(); // day of the week; 0 = sun, etc
+
+    if (
+      location.week[todayIndex].hours.length === 0 ||
+      location.week[todayIndex].closed
+    ) {
+      for (let i = todayIndex; i < location.week.length; i++) {
         let current = location.week[i];
         if (!current.closed) {
           const date = parse(current.date, "yyyy-MM-dd", new Date());
@@ -115,7 +121,7 @@ function DiningItem({
     }
 
     let isOpen = false;
-    for (let times of location.week[0].hours) {
+    for (let times of location.week[todayIndex].hours) {
       if (
         isDiningOpen(
           { minutes: times.start_hour, hours: times.start_hour },
@@ -128,7 +134,7 @@ function DiningItem({
     return (
       <>
         <Typography>Currently {isOpen ? "Open" : "Closed"}</Typography>
-        {location.week[0].hours.map((hours) => {
+        {location.week[todayIndex].hours.map((hours) => {
           const open = formatTime(hours.start_hour, hours.start_minutes);
           const close = formatTime(hours.end_hour, hours.end_minutes);
           return (
