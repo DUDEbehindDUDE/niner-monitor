@@ -108,7 +108,7 @@ function Data() {
     queryKey: ["CurrentOccupancyData"],
     queryFn: () =>
       fetch(
-        "https://uncc-occupancy-tracker-backend.onrender.com/api/OccupancyData/CurrentOccupancyData"
+        "https://niner-monitor-api.onrender.com/api/OccupancyData/CurrentOccupancyData"
       ).then((res) => res.json()),
     refetchInterval: 5000,
   });
